@@ -1,3 +1,4 @@
+import openai
 import streamlit as st
 
 st.set_page_config(page_title="Dream Day Generator", page_icon="✨")
@@ -51,10 +52,6 @@ if st.button("💫 Generate My Dream Day"):
     st.write(f"**Goal of the Day:** {goal}")
     st.success("All set! Ready to dream ✨ (Next step: Itinerary Generation)")
 
-import openai
-import streamlit as st
-
-# Your existing Streamlit code for user input (from Step 1)
 
 # Function to generate itinerary (new feature)
 def generate_itinerary(mood, aesthetic, goal):
