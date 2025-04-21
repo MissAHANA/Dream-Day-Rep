@@ -51,3 +51,50 @@ if st.button("💫 Generate My Dream Day"):
     st.write(f"**Goal of the Day:** {goal}")
     st.success("All set! Ready to dream ✨ (Next step: Itinerary Generation)")
 
+import openai
+import streamlit as st
+
+# Your existing Streamlit code for user input (from Step 1)
+
+# Function to generate itinerary (new feature)
+def generate_itinerary(mood, aesthetic, goal):
+    prompt = f"""
+    Generate a personalized itinerary for someone who feels {mood}, loves {aesthetic}, and wants to {goal}. 
+    Divide the day into four parts:
+    1. Morning: Start with a calming activity or a way to ease into the day.
+    2. Afternoon: Suggest an activity that matches their energy level — it could be work, creative time, or a relaxing activity.
+    3. Evening: Give a peaceful, wind-down activity that matches the mood and aesthetic.
+    4. Night: Suggest something for closure — either restful sleep or an inspiring thought (like stargazing or meditation).
+    For each section, add a short reflection or companion message.
+    """
+    
+    response = openai.Completion.create(
+        engine="text-davinci-003",  # Use the appropriate GPT engine
+        prompt=prompt,
+        max_tokens=400,
+        temperature=0.7  # Controls randomness; lower = more focused
+    )
+    
+    itinerary = response.choices[0].text.strip()
+    return itinerary
+
+# Add your existing input fields (Step 1)
+st.title("🌙 Dream Day Generator")
+
+# Get user inputs for mood, aesthetic, and goal
+mood = st.text_input("💭 How are you feeling right now?")
+aesthetic = st.selectbox("Choose your aesthetic:", 
+                         ["Cottagecore", "Cozy Academia", "Minimal / Zen", 
+                          "Dreamy / Ethereal", "Retro 90s", "Soft Cyberpunk"])
+goal = st.selectbox("What do you want to feel today?", 
+                    ["Feel peace", "Spark creativity", "Romanticize life", 
+                     "Reconnect with self", "Be inspired", "Rest and heal"])
+
+# Button to generate the itinerary
+if st.button("💫 Generate My Dream Day Itinerary"):
+    if mood and aesthetic and goal:
+        itinerary = generate_itinerary(mood, aesthetic, goal)
+        st.markdown("## 📝 Your Dream Day Itinerary")
+        st.write(itinerary)
+    else:
+        st.warning("Please fill in all fields before generating!")
